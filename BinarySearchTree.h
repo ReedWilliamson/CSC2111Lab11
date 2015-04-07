@@ -60,19 +60,39 @@ class BinarySearchTree : public Drawable
 template < class T >
 void BinarySearchTree<T>::remove(String* sk)
 {
-   //DO THIS
-
-
-
+	if(isEmtpy())
+		return;
+	root = removeItem(root, sk);
 }
 
 template < class T >
 TreeNode<T>* BinarySearchTree<T>::removeItem(TreeNode<T>* tNode, String* sk)
 {
-   //DO THIS
-
-
-
+	if(tNode == NULL)
+		return tNode;
+	
+	T* comp_item = tNode->getItem();
+	int comp_num = (*compare_keys) (sk, comp_item);
+	
+	if(comp_num == 0)
+	{
+		sze--;
+		return removeNode(tNode);
+	}
+	else if(comp_num < 0)
+	{
+		TreeNode<T>* subtree;
+		subtree = removeItem(tNode->getLeft(), sk);
+		tNode = setLeft(subtree);
+		return tNode;
+	}
+	else
+	{
+		TreeNode<T>* subtree;
+		subtree = removeItem(tNode->getRight(), sk);
+		tNode = setRight(subtree);
+		return tNode;
+	}
 }
 
 template < class T >
@@ -97,12 +117,8 @@ TreeNode<T>* BinarySearchTree<T>::removeNode(TreeNode<T>* tNode)
    }
    else 
    {
-      //DO THIS
-
-
-
-
-
+      TreeNode<T>* temp_left = tNode->getLeft();
+	  TreeNode<T>* temp_right = tNode->getRight();
    }
 }
 
