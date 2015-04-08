@@ -60,8 +60,6 @@ class BinarySearchTree : public Drawable
 template < class T >
 void BinarySearchTree<T>::remove(String* sk)
 {
-	if(isEmtpy())
-		return;
 	root = removeItem(root, sk);
 }
 
@@ -69,7 +67,9 @@ template < class T >
 TreeNode<T>* BinarySearchTree<T>::removeItem(TreeNode<T>* tNode, String* sk)
 {
 	if(tNode == NULL)
+	{
 		return tNode;
+	}
 	
 	T* comp_item = tNode->getItem();
 	int comp_num = (*compare_keys) (sk, comp_item);
@@ -83,14 +83,14 @@ TreeNode<T>* BinarySearchTree<T>::removeItem(TreeNode<T>* tNode, String* sk)
 	{
 		TreeNode<T>* subtree;
 		subtree = removeItem(tNode->getLeft(), sk);
-		tNode = setLeft(subtree);
+		tNode->setLeft(subtree);
 		return tNode;
 	}
 	else
 	{
 		TreeNode<T>* subtree;
 		subtree = removeItem(tNode->getRight(), sk);
-		tNode = setRight(subtree);
+		tNode->setRight(subtree);
 		return tNode;
 	}
 }
@@ -116,41 +116,54 @@ TreeNode<T>* BinarySearchTree<T>::removeNode(TreeNode<T>* tNode)
       return temp;
    }
    else 
-   {
-      TreeNode<T>* temp_left = tNode->getLeft();
-	  TreeNode<T>* temp_right = tNode->getRight();
+   { 
+	  TreeNode<T>* temp_right;
+	  T* temp_LeftMost;
+	  TreeNode<T>* subtree;
+	  
+	  temp_right = tNode->getRight();
+	  temp_LeftMost = findLeftMost(temp_right);
+	  tNode->setItem(temp_LeftMost);
+	  subtree = removeLeftMost(temp_right);
+	  tNode->setRight(subtree);
+	  return tNode;
    }
 }
 
 template < class T >
 T* BinarySearchTree<T>::findLeftMost(TreeNode<T>* tNode)
 {
-   //DO THIS (use a while loop)
-
-
-
-
-
+	while(tNode->getLeft() != NULL)
+	{
+		tNode = tNode->getLeft();
+	}
+	
+	return tNode->getItem();
 }
 
 template < class T >
 TreeNode<T>* BinarySearchTree<T>::removeLeftMost(TreeNode<T>* tNode)
 {
-   //DO THIS (recursion)
-
-
-
-
-
+	if(tNode->getLeft() == NULL)
+	{
+		TreeNode<T>* right = tNode->getRight();
+		delete tNode;
+		return right;
+	}
+	else
+	{
+		TreeNode<T>* subtree;
+		
+		subtree = removeLeftMost(tNode->getLeft());
+		tNode->setLeft(subtree);
+		return tNode;
+	}
 }
 
 template < class T >
 T** BinarySearchTree<T>::toArray()
 {
-   //DO THIS
-
-
-
+	BinaryTreeIterator<T>* iter = iterator();
 }
 
 template < class T >
