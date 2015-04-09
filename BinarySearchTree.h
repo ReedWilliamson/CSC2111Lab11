@@ -163,16 +163,33 @@ TreeNode<T>* BinarySearchTree<T>::removeLeftMost(TreeNode<T>* tNode)
 template < class T >
 T** BinarySearchTree<T>::toArray()
 {
+	T** array_items = new T*[sze];
+	
 	BinaryTreeIterator<T>* iter = iterator();
+	iter->setInorder();
+	int i = 0;
+	while(iter->hasNext())
+	{
+		array_items[i] = iter->next();
+		i++;
+	}
+	delete iter;
+	
+	return array_items;
 }
 
 template < class T >
 T** BinarySearchTree<T>::treeSort(T** items, int num_itemss, int (*comp_items) (T* item_1, T* item_2), int (*comp_keys) (String* key, T* item))
 {
-   //DO THIS
-
-
-
+	BinarySearchTree<T>* bst = new BinarySearchTree<T>(comp_items, comp_keys);
+	for (int i = 0; i < num_itemss; i++)
+	{
+		bst->insert(items[i]);
+	}
+	
+	T** sorted = bst->toArray();
+	delete bst;
+	return sorted;
 }
 
 template < class T >
